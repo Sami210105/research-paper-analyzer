@@ -10,7 +10,7 @@ const FIELDS = [
   { key: 'limitations', label: 'Limitations', citKey: 'limitations_citations' },
 ]
 
-export default function ComparisonTable({ papers }) {
+export default function ComparisonTable({ papers, sessionId}) {
   const [modal, setModal] = useState(null) // { chunkIndex, paperId }
 
   if (!papers?.length) return null
@@ -85,6 +85,7 @@ export default function ComparisonTable({ papers }) {
         <CitationModal
           chunkIndex={modal.chunkIndex}
           paperId={modal.paperId}
+          sessionId={sessionId}
           onClose={() => setModal(null)}
         />
       )}

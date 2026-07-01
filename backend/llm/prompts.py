@@ -1,3 +1,5 @@
+from llm.okf_loader import load_for_aspects, load_all
+
 COMPARISON_SYSTEM_PROMPT = """
 You are a research paper analyst. You will be given text chunks from multiple research papers.
 Each chunk is labeled with its paper_id, aspect, and chunk_index.
@@ -82,3 +84,42 @@ Produce exactly one entry per unique paper_id in the papers array.
 Merge duplicate comparison aspects into single entries.
 Return only valid JSON. No explanation, no markdown, no extra text.
 """
+def build_comparison_prompt() -> str:
+    okf = load_for_aspects(["methodology", "results", "dataset", "limitations"])
+    
+    return f"""## RESEARCH EVALUATION CRITERIA
+Use the following as your baseline for quality assessment.
+When describing methodology, results, datasets, or limitations — 
+evaluate against these criteria, not just describe what the paper says.
+
+{okf}
+
+---
+
+{COMPARISON_SYSTEM_PROMPT}"""
+
+
+def build_methodology_prompt() -> str:
+    okf = load_for_aspects(["methodology"])
+    
+    return f"""## WHAT GOOD METHODOLOGY LOOKS LIKE
+Use this as a checklist when extracting steps.
+For each step, note if it meets or misses these criteria.
+
+{okf}
+
+---
+
+{METHODOLOGY_SYSTEM_PROMPT}"""
+
+
+def build_synthesis_prompt() -> str:
+    # synthesis gets everything since it's doing a final pass
+    okf = load_all()
+    
+    return f"""## RESEARCH EVALUATION CRITERIA
+{okf}
+
+---
+
+{SYNTHESIS_SYSTEM_PROMPT}"""

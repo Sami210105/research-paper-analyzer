@@ -1,8 +1,7 @@
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createSession, uploadPapers, generateReport } from '../api/client'
-
-const HERO_IMG = 'https://picsum.photos/seed/scholarly/1200/500?grayscale'
+import { Landmark, PenLine } from 'lucide-react';
 
 export default function HomePage({ onReportReady, onLoadingStart }) {
   const [files, setFiles] = useState([])
@@ -42,72 +41,135 @@ export default function HomePage({ onReportReady, onLoadingStart }) {
   return (
     <main style={{ background: 'var(--color-paper)', minHeight: '100vh' }}>
 
-      {/* BREAKING NEWS TICKER */}
-      <div style={{
-        background: 'var(--color-ink)', color: 'var(--color-parchment)',
-        padding: '0.3rem 1.5rem', display: 'flex', alignItems: 'center', gap: '1rem', overflow: 'hidden',
-      }}>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', letterSpacing: '0.18em', textTransform: 'uppercase', whiteSpace: 'nowrap', background: 'var(--color-gold)', color: 'var(--color-ink)', padding: '0.1rem 0.5rem', flexShrink: 0 }}>
-          Latest
-        </span>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', letterSpacing: '0.1em', textTransform: 'uppercase', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: 'var(--color-parchment)', opacity: 0.85 }}>
-          Upload your research PDFs below for full cross-paper analysis, citations, methodology flowcharts and agreement detection
-        </p>
-      </div>
-
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 1.5rem' }}>
+      <div style={{ maxWidth: 1500, margin: '0 auto', padding: '0 1.5rem' }}>
 
         {/* HERO HEADLINE */}
         <section style={{ padding: '2rem 0 0' }}>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--color-ink-light)', textAlign: 'center', marginBottom: '0.6rem' }}>
-            — Special Research Edition —
-          </p>
           <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.8rem, 4vw, 3rem)', lineHeight: 1.15, color: 'var(--color-ink)', textAlign: 'center', maxWidth: 700, margin: '0 auto 0.5rem' }}>
-            Unlock the Intelligence Hidden Across Your Research Papers
+            Every Paper Tells a Story. Together, They Reveal the Truth.
           </h2>
           <p style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontSize: '1rem', color: 'var(--color-ink-mid)', textAlign: 'center', maxWidth: 600, margin: '0 auto 1.25rem', lineHeight: 1.5 }}>
-            Scholar Press analyses multiple PDFs simultaneously, surfaces agreements and conflicts, traces every claim to its source, and maps each paper's methodology into a readable flowchart.
-          </p>
-          <div style={{ borderTop: '3px solid var(--color-ink)', marginBottom: '3px' }} />
-          <div style={{ borderTop: '1px solid var(--color-ink)', marginBottom: '1.25rem' }} />
+            Conduct multi-paper analysis with citation-grounded precision, expose agreements and contradictions, explore methodological frameworks, and transform scattered publications into coherent scholarly insight.
+          </p>  
         </section>
 
-        {/* HERO IMAGE */}
-        <section style={{ marginBottom: '0.5rem' }}>
-          <div style={{ position: 'relative', overflow: 'hidden', border: '1px solid var(--color-rule)' }}>
-            <img
-              src={HERO_IMG}
-              alt="Research papers spread across a desk"
-              style={{ width: '100%', height: 'clamp(200px, 38vw, 420px)', objectFit: 'cover', display: 'block', filter: 'grayscale(55%) sepia(25%) contrast(1.1) brightness(0.88)' }}
-            />
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, rgba(28,18,8,0.72))', padding: '2rem 1.25rem 0.75rem' }}>
-              <p style={{ fontFamily: 'var(--font-body)', fontStyle: 'italic', fontSize: '0.78rem', color: 'rgba(232,220,190,0.9)', lineHeight: 1.4 }}>
-                Scholar Press ingests your PDFs, fragments them into indexed chunks, and applies AI analysis to surface cross-paper intelligence.
+        <div style={{ margin: '0 0 1rem 0' }}>
+          <div style={{ borderTop: '3px solid var(--color-ink)' }} />
+          <div style={{ borderTop: '1px solid var(--color-ink)', marginTop: '3px' }} />
+        </div>
+
+        {/* MAIN GRID: content + sidebar */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2.2fr) minmax(0, 1fr)', gap: '1.5rem', alignItems: 'stretch', marginBottom: '3rem' }}>
+
+          {/* LEFT: HERO + THREE-COLUMN FEATURES */}
+          <div>
+            {/* HERO IMAGE */}
+            <section className="mb-4">
+              <div className="relative overflow-hidden border border-[var(--color-rule)] max-h-100">
+                <img
+                  src="hero-sec-img.jpg"
+                  alt="Research papers spread across a desk"
+                  className="w-full h-100 object-cover"
+                />
+                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 via-black/20 to-transparent p-5">
+                  <p className="text-sm italic leading-relaxed text-stone-100">
+                    Scholar Press ingests your PDFs, fragments them into indexed
+                    chunks, and applies AI analysis to surface cross-paper
+                    intelligence.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* THREE-COLUMN FEATURES */}
+            <section style={{ marginTop: '1.5rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '0', border: '1px solid var(--color-ink)' }}>
+                {[
+                  {
+                    number: 'I.',
+                    heading: 'Side-by-Side Comparison',
+                    body: 'Every paper\'s summary, methodology, dataset, results, and limitations placed in a single table. Differences emerge at a glance without toggling between tabs or PDFs.',
+                    page: '02',
+                  },
+                  {
+                    number: 'II.',
+                    heading: 'Agreement & Conflict Detection',
+                    body: 'Scholar Press identifies where papers reinforce each other\'s findings and where they diverge — flagging each point with its exact supporting passage from the original text.',
+                    page: '04',
+                  },
+                  {
+                    number: 'III.',
+                    heading: 'Methodology Flowcharts',
+                    body: 'Each paper\'s research pipeline rendered as a visual flowchart with a plain-language step-by-step breakdown. No jargon — just what the paper actually did.',
+                    page: '06',
+                  },
+                ].map((col, i) => (
+                  <div key={i} style={{ padding: '1rem 1.25rem', borderRight: '1px solid var(--color-rule-light)', display: 'flex', flexDirection: 'column' }}>
+                    <p style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '1.5rem', color: 'var(--color-ink)', lineHeight: 1, marginBottom: '0.4rem' }}>{col.number}</p>
+                    <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', color: 'var(--color-ink)', marginBottom: '0.6rem', lineHeight: 1.3, textTransform: 'uppercase' }}>{col.heading}</h3>
+                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'var(--color-ink-mid)', lineHeight: 1.7, marginBottom: '0.75rem' }}>{col.body}</p>
+                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-ink)', marginTop: 'auto' }}>
+                      <span style={{ marginRight: '0.35rem' }}>→</span>
+                      <span style={{ borderBottom: '1px solid var(--color-ink)' }}>See Page {col.page}</span>
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
+
+          {/* RIGHT: SIDEBAR */}
+          <aside style={{ border: '1px solid var(--color-ink)', display: 'flex', flexDirection: 'column'}}>
+
+            {/* LATEST EDITION */}
+            <div style={{ padding: '1.1rem', borderBottom: '1px solid var(--color-rule)' }}>
+              <h4 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '0.95rem', letterSpacing: '0.05em', textAlign: 'center', color: 'var(--color-ink)', marginBottom: '0.35rem' }}>
+                LATEST EDITION
+              </h4>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.68rem', letterSpacing: '0.08em', textAlign: 'center', color: 'var(--color-ink-mid)', marginBottom: '0.9rem' }}>
+                VOLUME I &nbsp;•&nbsp; ISSUE 1 &nbsp;•&nbsp; MAY 2025
+              </p>
+              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', marginBottom: '0.9rem' }}>
+                <Landmark size={32} strokeWidth={1.25} style={{ color: 'var(--color-ink)', flexShrink: 0 }} />
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', lineHeight: 1.6, color: 'var(--color-ink-mid)' }}>
+                  Scholar Press is devoted to rigorous, citation-grounded analysis of academic literature across disciplines.
+                </p>
+              </div>
+              <div style={{ borderTop: '1px dashed var(--color-rule)', marginBottom: '0.6rem' }} />
+              <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.7rem', letterSpacing: '0.06em', textAlign: 'center', color: 'var(--color-ink)' }}>
+                KNOWLEDGE. CONTEXT. CLARITY.
               </p>
             </div>
-          </div>
-        </section>
 
-        {/* THREE-COLUMN FEATURES */}
-        <section style={{ marginTop: '1.5rem', marginBottom: '2rem' }}>
-          <div style={{ borderTop: '3px solid var(--color-ink)', marginBottom: '3px' }} />
-          <div style={{ borderTop: '1px solid var(--color-ink)', marginBottom: '1.25rem' }} />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0', borderLeft: '1px solid var(--color-rule-light)' }}>
-            {[
-              { number: 'I.', heading: 'Side-by-Side Comparison', body: 'Every paper\'s summary, methodology, dataset, results, and limitations placed in a single table. Differences emerge at a glance without toggling between tabs or PDFs.' },
-              { number: 'II.', heading: 'Agreement & Conflict Detection', body: 'Scholar Press identifies where papers reinforce each other\'s findings and where they diverge — flagging each point with its exact supporting passage from the original text.' },
-              { number: 'III.', heading: 'Methodology Flowcharts', body: 'Each paper\'s research pipeline rendered as a visual flowchart with a plain-language step-by-step breakdown. No jargon — just what the paper actually did.' },
-            ].map((col, i) => (
-              <div key={i} style={{ padding: '1rem 1.25rem', borderRight: '1px solid var(--color-rule-light)' }}>
-                <p style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '1.5rem', color: 'var(--color-ink)', lineHeight: 1, marginBottom: '0.4rem' }}>{col.number}</p>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', color: 'var(--color-ink)', marginBottom: '0.6rem', lineHeight: 1.3 }}>{col.heading}</h3>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'var(--color-ink-mid)', lineHeight: 1.7 }}>{col.body}</p>
+            {/* RESEARCHER'S NOTE */}
+            <div style={{ padding: '1.1rem', borderBottom: '1px solid var(--color-rule)' }}>
+              <h4 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '0.85rem', letterSpacing: '0.05em', textAlign: 'center', color: 'var(--color-ink)', marginBottom: '0.75rem' }}>
+                RESEARCHER'S NOTE
+              </h4>
+              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+                <PenLine size={22} strokeWidth={1.25} style={{ color: 'var(--color-ink)', flexShrink: 0, marginTop: '0.2rem' }} />
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', lineHeight: 1.6, color: 'var(--color-ink-mid)' }}>
+                  In an era of information overload, clarity is your greatest advantage. We bring structure to complexity — so you can focus on insight, not information hunting.
+                </p>
               </div>
-            ))}
-          </div>
-          <div style={{ borderTop: '1px solid var(--color-ink)', marginTop: '3px' }} />
-          <div style={{ borderTop: '3px solid var(--color-ink)', marginTop: '3px', marginBottom: '2rem' }} />
-        </section>
+            </div>
+
+            {/* TODAY'S HEADLINE */}
+            <div style={{ padding: '1.1rem', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+              <h4 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '0.85rem', letterSpacing: '0.05em', textAlign: 'center', color: 'var(--color-ink)', marginBottom: '0.4rem' }}>
+                ★&nbsp;&nbsp;TODAY'S HEADLINE&nbsp;&nbsp;★
+              </h4>
+              <div style={{ borderTop: '1px dashed var(--color-rule)', marginBottom: '0.9rem' }} />
+              <p style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontWeight: 600, fontSize: '1.05rem', lineHeight: 1.5, textAlign: 'center', color: 'var(--color-ink)', marginBottom: '0.75rem' }}>
+                "The best way to predict the future of research is to understand its past."
+              </p>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', textAlign: 'center', color: 'var(--color-ink-mid)' }}>
+                — Scholar Press Editorial
+              </p>
+            </div>
+
+          </aside>
+        </div>
 
         {/* UPLOAD ZONE */}
         <section style={{ marginBottom: '3rem' }}>

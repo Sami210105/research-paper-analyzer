@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 const NAV_ITEMS = ['Home', 'Analysis', 'Methodology', 'Comparisons', 'Citations', 'Archive']
 
-export default function Masthead({ paperCount = 0, onToggleDark, isDark }) {
+export default function Masthead({ paperCount = 0}) {
   const [date, setDate] = useState('')
 
   useEffect(() => {
@@ -32,22 +32,6 @@ export default function Masthead({ paperCount = 0, onToggleDark, isDark }) {
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-ink-light)' }}>
             Est. 2025
           </span>
-          <button
-            onClick={onToggleDark}
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.58rem',
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              color: 'var(--color-ink-light)',
-              background: 'none',
-              border: '1px solid var(--color-rule)',
-              padding: '0.2rem 0.6rem',
-              cursor: 'pointer',
-            }}
-          >
-            {isDark ? '☀ Day' : '☾ Night'}
-          </button>
         </div>
       </div>
 
@@ -56,17 +40,6 @@ export default function Masthead({ paperCount = 0, onToggleDark, isDark }) {
 
       {/* Masthead title */}
       <div style={{ textAlign: 'center', padding: '1.5rem 1.5rem 0.75rem' }}>
-        {/* Kicker above title */}
-        <p style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.62rem',
-          letterSpacing: '0.28em',
-          textTransform: 'uppercase',
-          color: 'var(--color-ink-light)',
-          marginBottom: '0.5rem',
-        }}>
-          ✦ Research Intelligence · Academic Analysis · Citation Grounded ✦
-        </p>
 
         {/* Main masthead nameplate */}
         <h1 style={{
@@ -96,7 +69,7 @@ export default function Masthead({ paperCount = 0, onToggleDark, isDark }) {
       </div>
 
       {/* Double rule below nameplate */}
-      <div style={{ margin: '0 1.5rem' }}>
+      <div style={{ margin: '0' }}>
         <div style={{ borderTop: '1px solid var(--color-ink)' }} />
         <div style={{ borderTop: '3px solid var(--color-ink)', marginTop: '3px' }} />
       </div>
@@ -107,8 +80,8 @@ export default function Masthead({ paperCount = 0, onToggleDark, isDark }) {
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '0.15rem',
-        padding: '0.4rem 1.5rem',
+        gap: '0.5rem',
+        padding: '0.5rem 1.5rem',
       }}>
         {NAV_ITEMS.map((item, i) => (
           <span key={item} style={{ display: 'flex', alignItems: 'center' }}>
@@ -128,15 +101,12 @@ export default function Masthead({ paperCount = 0, onToggleDark, isDark }) {
             >
               {item}
             </a>
-            {i < NAV_ITEMS.length - 1 && (
-              <span style={{ color: 'var(--color-rule)', fontSize: '0.65rem' }}>|</span>
-            )}
           </span>
         ))}
       </nav>
 
       {/* Double rule below nav */}
-      <div style={{ margin: '0 1.5rem' }}>
+      <div style={{ margin: '0' }}>
         <div style={{ borderTop: '3px solid var(--color-ink)' }} />
         <div style={{ borderTop: '1px solid var(--color-ink)', marginTop: '3px' }} />
       </div>
@@ -148,15 +118,15 @@ export default function Masthead({ paperCount = 0, onToggleDark, isDark }) {
         alignItems: 'center',
         padding: '0.3rem 1.5rem',
         borderTop: '1px solid var(--color-rule)',
-        background: 'var(--color-parchment-2)',
+        background: '#67635a',
       }}>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-ink-light)' }}>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#ede3c8' }}>
           Price: Free to Scholars
         </span>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--color-ink-light)' }}>
-          ★ Final Edition ★
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#ede3c8' }}>
+          Final Edition 
         </span>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-ink-light)' }}>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#ede3c8' }}>
           All Rights Reserved
         </span>
       </div>

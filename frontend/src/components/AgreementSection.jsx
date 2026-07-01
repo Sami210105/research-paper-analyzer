@@ -2,44 +2,52 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import CitationModal from './CitationModal'
 
-export default function AgreementSection({ comparisons }) {
+export default function AgreementSection({ comparisons, sessionId }) {
   const [modal, setModal] = useState(null)
-  const [filter, setFilter] = useState('all') // all | agree | disagree
+  const [filter, setFilter] = useState('all')
 
   if (!comparisons?.length) return null
 
   const agrees = comparisons.filter(c => c.agreement === true || c.agreement === 'true')
   const disagrees = comparisons.filter(c => c.agreement === false || c.agreement === 'false')
-
-  const filtered = filter === 'agree' ? agrees
-    : filter === 'disagree' ? disagrees
-    : comparisons
+  const filtered = filter === 'agree' ? agrees : filter === 'disagree' ? disagrees : comparisons
 
   return (
-    <section className="px-6 py-4">
-      <div className="section-rule" />
-      <p className="eyebrow mb-2">Cross-Paper Intelligence</p>
-      <h2 className="font-display text-3xl font-bold text-ink dark:text-dark-text mb-2">
+    <section style={{ padding: '1rem 0' }}>
+      <div style={{ borderTop: '3px solid var(--color-ink)', marginBottom: '3px' }} />
+      <div style={{ borderTop: '1px solid var(--color-ink)', marginBottom: '1.5rem' }} />
+
+      <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--color-ink-light)', marginBottom: '0.5rem' }}>
+        Cross-Paper Intelligence
+      </p>
+      <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.8rem', color: 'var(--color-ink)', marginBottom: '0.5rem' }}>
         Where Papers Agree & Clash
       </h2>
 
       {/* Stats bar */}
-      <div className="flex gap-6 mb-4 font-mono text-sm">
-        <span className="text-agree">▲ {agrees.length} agreements</span>
-        <span className="text-disagree">▼ {disagrees.length} conflicts</span>
+      <div style={{ display: 'flex', gap: '1.5rem', marginBottom: '1rem', fontFamily: 'var(--font-mono)', fontSize: '0.8rem' }}>
+        <span style={{ color: 'var(--color-agree)' }}>▲ {agrees.length} agreements</span>
+        <span style={{ color: 'var(--color-disagree)' }}>▼ {disagrees.length} conflicts</span>
       </div>
 
       {/* Filter buttons */}
-      <div className="flex gap-2 mb-6">
+      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem' }}>
         {['all', 'agree', 'disagree'].map(f => (
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`font-mono text-xs px-3 py-1.5 border transition-all ${
-              filter === f
-                ? 'bg-ink dark:bg-gold text-newsprint dark:text-ink border-ink dark:border-gold'
-                : 'border-rule dark:border-dark-rule text-muted dark:text-gold hover:border-ink dark:hover:border-gold'
-            }`}
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.6rem',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              padding: '0.35rem 0.85rem',
+              border: '1px solid var(--color-rule)',
+              cursor: 'pointer',
+              background: filter === f ? 'var(--color-ink)' : 'transparent',
+              color: filter === f ? 'var(--color-parchment)' : 'var(--color-ink-light)',
+              transition: 'all 0.15s',
+            }}
           >
             {f.toUpperCase()}
           </button>
@@ -47,45 +55,47 @@ export default function AgreementSection({ comparisons }) {
       </div>
 
       {/* Cards grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1rem' }}>
         {filtered.map((comp, i) => {
           const isAgree = comp.agreement === true || comp.agreement === 'true'
           return (
             <motion.div
               key={i}
-              className={isAgree ? 'agree-card' : 'disagree-card'}
+              style={{
+                borderLeft: `3px solid var(${isAgree ? '--color-agree' : '--color-disagree'})`,
+                background: isAgree ? '#eaf3ec' : '#f5eaea',
+                padding: '1rem',
+              }}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.07 }}
             >
-              {/* Header */}
-              <div className="flex justify-between items-start mb-2">
-                <span className={`font-mono text-xs uppercase tracking-wider ${isAgree ? 'text-agree' : 'text-disagree'}`}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: isAgree ? 'var(--color-agree)' : 'var(--color-disagree)' }}>
                   {isAgree ? '✓ Agreement' : '✗ Conflict'}
                 </span>
-                <span className="font-mono text-xs text-muted dark:text-gold">
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'var(--color-ink-light)' }}>
                   #{String(i + 1).padStart(2, '0')}
                 </span>
               </div>
 
-              {/* Aspect headline */}
-              <h3 className="font-display text-lg font-bold text-ink dark:text-dark-text mb-2">
+              <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.05rem', color: 'var(--color-ink)', marginBottom: '0.5rem' }}>
                 {comp.aspect}
               </h3>
 
-              {/* Detail */}
-              <p className="font-body text-sm text-ink dark:text-dark-text leading-relaxed mb-3">
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'var(--color-ink-mid)', lineHeight: 1.6, marginBottom: '0.75rem' }}>
                 {comp.detail}
               </p>
 
-              {/* Per-paper citations */}
               {comp.citations?.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-2 pt-2 border-t border-rule dark:border-dark-rule">
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', paddingTop: '0.6rem', borderTop: '1px solid var(--color-rule-light)' }}>
                   {comp.citations.map(cit => (
                     <button
                       key={`${cit.paper_id}-${cit.chunk_index}`}
                       onClick={() => setModal({ chunkIndex: cit.chunk_index, paperId: cit.paper_id })}
-                      className="font-mono text-xs px-2 py-1 border border-gold text-gold hover:bg-gold hover:text-ink transition-colors"
+                      style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', padding: '0.2rem 0.5rem', border: '1px solid var(--color-gold)', color: 'var(--color-gold)', background: 'none', cursor: 'pointer', transition: 'all 0.15s' }}
+                      onMouseEnter={e => { e.currentTarget.style.background = 'var(--color-gold)'; e.currentTarget.style.color = 'var(--color-ink)' }}
+                      onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.color = 'var(--color-gold)' }}
                     >
                       {cit.paper_id.slice(0, 12)}.. [{cit.chunk_index}]
                     </button>
@@ -101,11 +111,13 @@ export default function AgreementSection({ comparisons }) {
         <CitationModal
           chunkIndex={modal.chunkIndex}
           paperId={modal.paperId}
+          sessionId={sessionId}
           onClose={() => setModal(null)}
         />
       )}
 
-      <div className="section-rule mt-6" />
+      <div style={{ borderTop: '1px solid var(--color-ink)', marginTop: '2rem', marginBottom: '3px' }} />
+      <div style={{ borderTop: '3px solid var(--color-ink)' }} />
     </section>
   )
 }

@@ -1,6 +1,6 @@
 import json
-from llm.gemini_client import call_gemini as call_groq
-from llm.prompts import METHODOLOGY_SYSTEM_PROMPT
+from llm.ollama_client import call_ollama as call_groq
+from llm.prompts import build_methodology_prompt
 
 
 def extract_methodology(paper_id, chunks):
@@ -11,7 +11,7 @@ def extract_methodology(paper_id, chunks):
     messages = [
         {
             "role": "system",
-            "content": METHODOLOGY_SYSTEM_PROMPT
+            "content": build_methodology_prompt()
         },
         {
             "role": "user",

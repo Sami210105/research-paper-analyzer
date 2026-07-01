@@ -1,7 +1,7 @@
 import json
 import random
-from llm.gemini_client import call_gemini as call_groq
-from llm.prompts import COMPARISON_SYSTEM_PROMPT, SYNTHESIS_SYSTEM_PROMPT
+from llm.ollama_client import call_ollama as call_groq
+from llm.prompts import build_comparison_prompt, build_synthesis_prompt
 
 
 def format_chunks_for_prompt(chunks):
@@ -20,7 +20,7 @@ def compare_papers(chunks):
     messages = [
         {
             "role": "system",
-            "content": COMPARISON_SYSTEM_PROMPT
+            "content": build_comparison_prompt()
         },
         {
             "role": "user",
@@ -43,7 +43,7 @@ def synthesize_comparisons(group_results):
     messages = [
         {
             "role": "system",
-            "content": SYNTHESIS_SYSTEM_PROMPT
+            "content": build_synthesis_prompt()
         },
         {
             "role": "user",
@@ -57,29 +57,23 @@ def synthesize_comparisons(group_results):
 
 
 def compare_papers_hierarchical(chunks, threshold=5, group_size=5):
-    # get unique paper_ids from chunks
     paper_ids = list(set(c["paper_id"] for c in chunks))
     total_papers = len(paper_ids)
 
-    # below threshold — use simple single comparison
     if total_papers <= threshold:
         print(f"  {total_papers} papers — using simple comparison")
         return compare_papers(chunks)
 
-    # above threshold — hierarchical grouping
     print(f"  {total_papers} papers — using hierarchical comparison")
 
-    # shuffle paper_ids randomly for grouping
     random.shuffle(paper_ids)
 
-    # split into groups of group_size
     groups = [
         paper_ids[i:i + group_size]
         for i in range(0, total_papers, group_size)
     ]
     print(f"  Split into {len(groups)} groups of up to {group_size} papers each")
 
-    # compare each group independently
     group_results = []
     for i, group in enumerate(groups):
         print(f"  Comparing group {i+1}/{len(groups)}: {group}")
@@ -87,7 +81,6 @@ def compare_papers_hierarchical(chunks, threshold=5, group_size=5):
         result = compare_group(group_chunks)
         group_results.append(result)
 
-    # synthesize all group results into one final comparison
     print("  Synthesizing group results...")
     final = synthesize_comparisons(group_results)
     return final
